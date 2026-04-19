@@ -57,3 +57,14 @@ export const updateAdminCredentials = async (credentials, token) => {
     throw error.response?.data || error.message;
   }
 };
+
+export const deleteOrder = async (id, token) => {
+  try {
+    const response = await axios.delete(`${API_URL}/orders/${id}`, {
+      headers: { Authorization: token }
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};

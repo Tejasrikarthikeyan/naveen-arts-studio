@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getOrders, updateOrderStatus, updateAdminCredentials } from '../api';
+import { getOrders, updateOrderStatus, updateAdminCredentials, deleteOrder } from '../api';
 
 const AdminDashboard = () => {
   const [orders, setOrders] = useState([]);
@@ -43,6 +43,16 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleDeleteOrder = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this request?')) return;
+    try {
+      await deleteOrder(id, token);
+      setOrders(orders.filter(o => o._id !== id));
+    } catch (error) {
+      alert('Failed to delete order');
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
     navigate('/admin/login');
@@ -81,6 +91,7 @@ const AdminDashboard = () => {
               <th style={{ padding: '1rem' }}>Details</th>
               <th style={{ padding: '1rem' }}>Total</th>
               <th style={{ padding: '1rem' }}>Status</th>
+              <th style={{ padding: '1rem' }}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -120,7 +131,7 @@ const AdminDashboard = () => {
                     )}
                   </td>
                   <td style={{ padding: '1rem' }}>${order.total || 'N/A'}</td>
-                  <td style={{ padding: '1rem' }}>
+                  <td style={{ padding: '1rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                     <select 
                       value={order.status} 
                       onChange={(e) => handleStatusChange(order._id, e.target.value)}
@@ -132,6 +143,20 @@ const AdminDashboard = () => {
                       <option value="completed">Completed</option>
                       <option value="cancelled">Cancelled</option>
                     </select>
+                    <button 
+                      onClick={() => handleDeleteOrder(order._id)}
+                      style={{ 
+                        backgroundColor: '#ef4444', 
+                        color: '#fff', 
+                        border: 'none', 
+                        padding: '0.5rem 0.8rem', 
+                        borderRadius: '4px', 
+                        cursor: 'pointer',
+                        fontSize: '0.85rem'
+                      }}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))
