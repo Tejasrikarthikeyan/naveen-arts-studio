@@ -46,3 +46,14 @@ export const updateOrderStatus = async (id, status, token) => {
     throw error.response?.data || error.message;
   }
 };
+
+export const updateAdminCredentials = async (credentials, token) => {
+  try {
+    const response = await axios.put(`${API_URL}/users/update`, credentials, {
+      headers: { Authorization: token }
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};

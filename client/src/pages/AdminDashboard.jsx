@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getOrders, updateOrderStatus } from '../api';
+import { getOrders, updateOrderStatus, updateAdminCredentials } from '../api';
 
 const AdminDashboard = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [newEmail, setNewEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [updateMessage, setUpdateMessage] = useState('');
   const navigate = useNavigate();
   const token = localStorage.getItem('adminToken');
 
@@ -43,6 +46,20 @@ const AdminDashboard = () => {
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
     navigate('/admin/login');
+  };
+
+  const handleUpdateCredentials = async (e) => {
+    e.preventDefault();
+    if (!newEmail && !newPassword) return;
+    try {
+      await updateAdminCredentials({ email: newEmail, password: newPassword }, token);
+      setUpdateMessage('Credentials updated successfully!');
+      setNewEmail('');
+      setNewPassword('');
+      setTimeout(() => setUpdateMessage(''), 3000);
+    } catch (error) {
+      setUpdateMessage('Failed to update credentials.');
+    }
   };
 
   if (loading) return <div className="container" style={{ padding: '4rem 0', textAlign: 'center' }}>Loading dashboard...</div>;
@@ -121,6 +138,38 @@ const AdminDashboard = () => {
             )}
           </tbody>
         </table>
+      </div>
+
+      <div className="card" style={{ marginTop: '2rem' }}>
+        <h2 style={{ color: 'var(--accent)', marginBottom: '1.5rem', fontSize: '1.5rem' }}>Update Admin Credentials</h2>
+        <form onSubmit={handleUpdateCredentials}>
+          <div className="grid grid-cols-2" style={{ gap: '1rem', marginBottom: '1rem' }}>
+            <div className="form-group" style={{ marginBottom: 0 }}>
+              <label className="form-label">New Email Address</label>
+              <input 
+                type="email" 
+                className="form-input" 
+                value={newEmail} 
+                onChange={(e) => setNewEmail(e.target.value)} 
+                placeholder="Leave blank to keep current" 
+              />
+            </div>
+            <div className="form-group" style={{ marginBottom: 0 }}>
+              <label className="form-label">New Password</label>
+              <input 
+                type="password" 
+                className="form-input" 
+                value={newPassword} 
+                onChange={(e) => setNewPassword(e.target.value)} 
+                placeholder="Leave blank to keep current" 
+              />
+            </div>
+          </div>
+          <button type="submit" className="btn-primary" disabled={!newEmail && !newPassword}>
+            Update Credentials
+          </button>
+          {updateMessage && <p style={{ marginTop: '1rem', color: 'var(--accent)', fontWeight: 'bold' }}>{updateMessage}</p>}
+        </form>
       </div>
     </div>
   );
