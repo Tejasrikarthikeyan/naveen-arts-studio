@@ -7,7 +7,7 @@ const Home = () => {
     <div>
       <section className="hero">
         <div className="hero-content">
-          <h1>Immortalize Your Moments at Naveen Ink Studio</h1>
+          <h1>Immortalize Your Moments at Naveen Art's</h1>
           <p>Bespoke pencil sketches, vibrant color portraits, and unique doodle art tailored just for you.</p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '2rem' }}>
             <Link to="/commission" className="btn-primary">

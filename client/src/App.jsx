@@ -29,7 +29,7 @@ function App() {
         </main>
         <footer className="footer">
           <div className="container">
-            <p>&copy; {new Date().getFullYear()} Naveen Ink Studio. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} Naveen Art's. All rights reserved.</p>
           </div>
         </footer>
       </div>

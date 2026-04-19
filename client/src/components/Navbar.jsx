@@ -8,9 +8,9 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="container nav-content">
-        <Link to="/" className="nav-logo" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <Palette size={24} />
-          Naveen Ink Studio
+        <Link to="/" className="nav-logo" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <img src="/logo.jpg" alt="Naveen Art's Logo" style={{ height: '40px', width: 'auto', objectFit: 'contain' }} />
+          <span style={{ paddingTop: '0.25rem' }}>Naveen Art's</span>
         </Link>
         
         <button className="mobile-menu-btn" onClick={() => setIsOpen(!isOpen)}>
